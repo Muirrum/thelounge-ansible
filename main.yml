@@ -1,0 +1,13 @@
+---
+- name: Manage Thelounge
+  hosts: webclient
+  remote_user: thelounge
+  become: no
+  vars:
+    users:
+      - osalter
+      - rlupaczyk
+
+  roles:
+    - role: update
+    - role: users

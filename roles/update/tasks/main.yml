@@ -1,0 +1,19 @@
+---
+
+- name: Ensure /home/thelounge/thelounge exists
+  stat:
+    path: /home/thelounge/thelounge
+  register: st
+
+- name: Clone repository if it doesn't
+  git:
+    repo: https://github.com/Muirrum/thelounge.git
+    dest: /home/thelounge/thelounge
+    accept_hostkey: yes
+  when: not st.stat.exists and not st.stat.isdir
+
+- name: Update master branch
+  git:
+    repo: https://github.com/Muirrum/thelounge.git
+    dest: /home/thelounge/thelounge
+    accept_hostkey: yes

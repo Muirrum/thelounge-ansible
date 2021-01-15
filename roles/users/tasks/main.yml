@@ -1,0 +1,17 @@
+---
+
+- name: Verify that thelounge binary exists
+  shell: thelounge -v
+
+- name: Identify which users don't already exist
+  stat:
+    path: "/home/thelounge/.thelounge/users/{{ item }}.json"
+  with_items:
+    - "{{ users }}"
+  register: users_exist
+
+- name: Create users that don't already exist
+  shell: "thelounge add {{ item }} --password changeme --save-logs"
+  with_items:
+    - "{{ users_exist }}"
+  when: not users_exist.results.stat.exists
